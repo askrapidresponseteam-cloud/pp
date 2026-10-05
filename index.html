@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
 <title>A Life You Recognise - Pooja Prakash</title>
 <meta name="description" content="A Life You Recognise by Pooja Prakash. How to make choices that feel like yours." />
 <meta property="og:title" content="A Life You Recognise - Pooja Prakash" />
@@ -52,7 +52,9 @@ img{display:block;max-width:100%}
 .chip svg{width:15px;height:15px;flex:none}
 /* a single chip outside a tray carries its own tray ring */
 .chip.ringed{box-shadow:inset 0 0 0 1px rgba(0,0,0,.07),inset 0 -2px 0 rgba(0,0,0,.07),0 0 0 4px rgba(150,146,158,.26),0 0 0 5px rgba(255,255,255,.16)}
-.nav .brand{font:22px/40px 'Bebas Neue';letter-spacing:1.6px;white-space:nowrap;padding:0 12px 0 10px}
+.nav .brand{font:22px/40px 'Bebas Neue';letter-spacing:1.6px;white-space:nowrap;padding:0 12px 0 10px;max-width:260px;overflow:hidden;transition:max-width .45s cubic-bezier(.2,.7,.2,1),opacity .3s ease,padding .45s ease}
+.nav:not(.show-brand) .brand{max-width:0;opacity:0;padding:0}
+@media(max-width:850px){.nav:not(.show-brand) .tray-brand{opacity:0;pointer-events:none}.tray-brand{transition:opacity .3s ease}}
 .nav .brand span{color:var(--purple2)}
 .navlinks{display:flex;gap:4px}
 .menu{display:none}
@@ -126,9 +128,6 @@ img{display:block;max-width:100%}
 @keyframes pulse{70%{box-shadow:0 0 0 12px rgba(215,183,104,0)}100%{box-shadow:0 0 0 0 rgba(215,183,104,0)}}
 
 /* Floating buy pill, shown once the hero has scrolled away */
-.dock{position:fixed;left:50%;bottom:24px;z-index:35;transform:translate(-50%,170%);opacity:0;transition:transform .55s cubic-bezier(.2,.7,.2,1),opacity .4s,background .2s;box-shadow:inset 0 0 0 1px rgba(0,0,0,.07),inset 0 -2px 0 rgba(0,0,0,.07),0 0 0 4px rgba(150,146,158,.3),0 0 0 5px rgba(255,255,255,.18),0 18px 40px rgba(0,0,0,.45)}
-.dock.show{transform:translate(-50%,0);opacity:1}
-.dock.show:active{transform:translate(-50%,1px)}
 
 /* Sections */
 .section{position:relative;padding:130px 7vw}
@@ -227,6 +226,11 @@ img{display:block;max-width:100%}
 .join[data-state="form"] .join-form,.join[data-state="sending"] .join-form{display:block;animation:rise .55s cubic-bezier(.2,.7,.2,1)}
 .join[data-state="done"] .join-done{display:block;animation:rise .7s cubic-bezier(.2,.7,.2,1)}
 @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.dock{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:35;display:flex;gap:4px;transform:translateY(170%);opacity:0;transition:transform .5s cubic-bezier(.2,.7,.2,1),opacity .35s}
+.dock.show{transform:none;opacity:1}
+.dock .chip{flex:1;height:48px;font-size:12px;padding:0 10px}
+@media(max-width:370px){.dock .chip svg{display:none}.dock .chip{font-size:11px;letter-spacing:.02em}}
+@media(min-width:851px){.dock{display:none}}
 .join-field{display:flex;align-items:stretch;gap:4px;padding:4px;border-radius:10px;background:rgba(150,146,158,.18);border:1px solid rgba(255,255,255,.16);transition:border-color .3s,box-shadow .3s}
 .join-field:focus-within{border-color:var(--purple2);box-shadow:0 0 0 4px rgba(167,124,227,.16)}
 .join-field.err{border-color:#e48f8f;animation:shake .4s}
@@ -303,6 +307,22 @@ img{display:block;max-width:100%}
   .themes{grid-template-columns:1fr}
   .theme,.theme:nth-child(2n){border-right:0}
 }
+@media(max-width:850px){
+  .hero{padding:84px 7vw 56px;align-items:start}
+  .hero-grid{gap:8px}
+  .hero-visual{order:-1;padding:6px 0 64px!important}
+  .hero-copy{text-align:center}
+  .hero h1{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .hero .eyebrow{margin-bottom:12px}
+  .hero .tagline{margin:0 auto;max-width:340px;font-size:19px}
+  .hero .cta{display:none}
+  .split.book-intro{gap:0}
+  .book-intro h2{margin-bottom:16px}
+  .book-intro > div > p:first-child{margin-top:0}
+  .book-intro .lead{margin-bottom:16px}
+  .split{gap:36px}
+  .section{padding:76px 7vw}
+}
 @media(prefers-reduced-motion:reduce){
   .tv-scan:after{display:none}
   .mark .pg,.mark .spine,.tick circle,.tick path{stroke-dashoffset:0!important}
@@ -318,7 +338,7 @@ img{display:block;max-width:100%}
 <div class="loader" id="loader" aria-hidden="true"><div class="loader-inner"><svg class="mark" viewBox="0 0 64 48" aria-hidden="true"><path class="pg pg-l" d="M32 12C24 6 13 5.5 4 8.5v31c9-3 20-2.5 28 3.5"/><path class="pg pg-r" d="M32 12c8-6 19-6.5 28-3.5v31c-9-3-20-2.5-28 3.5"/><path class="spine" d="M32 12v31"/><path class="turn" d="M32 12c7-5 16-6 24-4v29c-8-2-17-1-24 4z"/></svg><div class="percent" id="percent">0%</div></div></div>
 
 <nav class="nav" id="nav">
-  <div class="tray"><a class="brand" href="#top">A LIFE <span>YOU</span> RECOGNISE</a><div class="navlinks"><a class="chip" href="#book">The Book</a><a class="chip" href="#inside">Inside</a><a class="chip" href="#author">Author</a><a class="chip" href="#launch">Launch</a></div></div>
+  <div class="tray tray-brand"><a class="brand" href="#top">A LIFE <span>YOU</span> RECOGNISE</a><div class="navlinks"><a class="chip" href="#book">The Book</a><a class="chip" href="#inside">Inside</a><a class="chip" href="#author">Author</a><a class="chip" href="#launch">Launch</a></div></div>
   <div class="tray"><button class="chip gold buy-btn" type="button" data-open-book><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 5h6a4 4 0 0 1 4 4v11a3 3 0 0 0-3-3H2z"/><path d="M22 5h-6a4 4 0 0 0-4 4v11a3 3 0 0 1 3-3h7z"/></svg>Get the book</button><button class="chip menu" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu"><span class="menu-lbl">Menu</span></button></div>
 </nav>
 <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
@@ -331,7 +351,7 @@ img{display:block;max-width:100%}
     <div class="hero-copy reveal">
       <div class="eyebrow">A new book by Pooja Prakash</div>
       <h1>A Life<br><span class="purple">You</span><br><span class="outline">Recognise</span></h1>
-      <p class="tagline">How to make choices that feel like yours.</p>
+      <p class="tagline">You don’t need to have it all figured out. You just need to recognise what’s yours.</p>
       <a class="cta" href="#book">Enter the story <span class="arrow" aria-hidden="true">↗</span></a>
     </div>
     <div class="hero-visual reveal">
@@ -344,10 +364,9 @@ img{display:block;max-width:100%}
             <div class="edge" aria-hidden="true"></div>
             <div class="page" id="orderPage" inert>
               <button class="pg-close" type="button" id="closeBook" aria-label="Close the book">×</button>
-              <div class="pg-kicker">Order your copy</div>
-              <p class="pg-title">Choose where to get it</p>
+              <div class="pg-kicker" style="margin-bottom:1.1em">Where to buy</div>
               <div class="stores" id="stores"></div>
-              <p class="pg-alt">Not out yet? <a href="#launch" data-join>Join the launch list</a></p>
+              <p class="pg-alt">Not out yet? <a href="#launch" data-join>Get notified</a></p>
             </div>
             <div class="cover">
               <div class="cover-front"><img src="assets/book-cover.jpg" alt="Front cover of A Life You Recognise by Pooja Prakash" width="900" height="1265" fetchpriority="high"></div>
@@ -356,7 +375,7 @@ img{display:block;max-width:100%}
           </div>
         </div>
       </div>
-      <button class="book-hint" type="button" data-open-book><span class="dot"></span>Tap the book to get your copy</button>
+      <button class="book-hint" type="button" data-open-book><span class="dot"></span>Tap the book to open it</button>
     </div>
   </div>
 </section>
@@ -368,18 +387,10 @@ img{display:block;max-width:100%}
       <h2>Decide what<br><span>happens</span><br>next.</h2>
     </div>
     <div class="reveal">
-      <p class="lead">You don’t need to have it all figured out. You just need to recognise what’s yours.</p>
-      <p class="body">A Life You Recognise is a thoughtful and practical guide for women ready to pause, reflect and make choices that truly feel like their own. It is about more than finding yourself. It is about noticing the life you are living, understanding how you got there, and deciding what comes after.</p>
+      <p class="body">A thoughtful, practical guide for women ready to pause, reflect and make choices that truly feel like their own. It is about more than finding yourself. It is about noticing the life you are living, and understanding how you got there.</p>
       <p class="body">With honesty, warmth and clarity, it explores the expectations, relationships, beliefs and everyday decisions that shape a life, and gives you the tools to choose differently. You do not have to follow the path you were given.</p>
     </div>
   </div>
-</section>
-
-<section class="section purple">
-  <figure class="quote reveal" style="margin:auto">
-    <p>“A more honest you creates a more <em>meaningful life.</em>”</p>
-    <small>Pooja Prakash</small>
-  </figure>
 </section>
 
 <section class="section dark" id="inside">
@@ -388,10 +399,10 @@ img{display:block;max-width:100%}
     <h2>What becomes<br><span>possible</span></h2>
   </div>
   <div class="themes reveal">
-    <article class="theme"><div class="num">01</div><h3>Recognise</h3><p>Separate what is truly yours from what you inherited or absorbed.</p></article>
+    <article class="theme"><div class="num">01</div><h3>Recognise</h3><p>Separate what you chose from what you inherited or absorbed.</p></article>
     <article class="theme"><div class="num">02</div><h3>Boundaries</h3><p>Say yes and no with more clarity, without carrying unnecessary guilt.</p></article>
     <article class="theme"><div class="num">03</div><h3>Values</h3><p>Make decisions that reflect what actually matters to you.</p></article>
-    <article class="theme"><div class="num">04</div><h3>Relationships</h3><p>Understand the patterns and expectations that shape connection.</p></article>
+    <article class="theme"><div class="num">04</div><h3>Relationships</h3><p>Notice the patterns you repeat with the people closest to you.</p></article>
     <article class="theme"><div class="num">05</div><h3>Becoming</h3><p>Build a life that feels authentic, not merely acceptable.</p></article>
   </div>
 </section>
@@ -404,8 +415,7 @@ img{display:block;max-width:100%}
       <p class="lead">A writer exploring the questions that sit underneath everyday life.</p>
     </div>
     <div class="reveal">
-      <p class="body">Pooja Prakash writes about how we make decisions, how expectations shape us, how relationships influence who we become, and how we build a life that feels genuinely our own.</p>
-      <p class="body">She believes a meaningful life does not have to follow a particular formula. It requires attention, honesty, courage and the willingness to keep choosing.</p>
+      <p class="body">She believes there is no single formula for a good life. It asks for attention, honesty, courage and the willingness to keep choosing.</p>
     </div>
   </div>
 </section>
@@ -455,7 +465,7 @@ img{display:block;max-width:100%}
           <button class="chip gold join-submit" type="submit"><span class="lbl">Count me in</span><span class="spin" aria-hidden="true"></span></button>
         </div>
         <p class="join-msg" id="joinMsg" role="status" aria-live="polite"></p>
-        <p class="join-note">One email when the book is out, plus the occasional early reading. Unsubscribe any time.</p>
+        <p class="join-note">No spam. Unsubscribe any time.</p>
       </form>
       <div class="join-done" id="joinDone" tabindex="-1">
         <span class="sparks" aria-hidden="true"><i style="--x:-70px;--y:-30px"></i><i style="--x:-48px;--y:-62px"></i><i style="--x:0px;--y:-78px"></i><i style="--x:48px;--y:-62px"></i><i style="--x:70px;--y:-30px"></i><i style="--x:-60px;--y:22px"></i><i style="--x:60px;--y:22px"></i><i style="--x:-24px;--y:-70px"></i><i style="--x:24px;--y:-70px"></i></span>
@@ -473,7 +483,7 @@ img{display:block;max-width:100%}
   </div>
 </section>
 </main>
-<button class="chip gold dock" id="dock" type="button" data-open-book aria-label="Get the book"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 5h6a4 4 0 0 1 4 4v11a3 3 0 0 0-3-3H2z"/><path d="M22 5h-6a4 4 0 0 0-4 4v11a3 3 0 0 1 3-3h7z"/></svg>Get the book</button>
+<div class="dock tray" id="dock" role="group" aria-label="Quick actions"><button class="chip gold" type="button" data-open-book><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 5h6a4 4 0 0 1 4 4v11a3 3 0 0 0-3-3H2z"/><path d="M22 5h-6a4 4 0 0 0-4 4v11a3 3 0 0 1 3-3h7z"/></svg>Get the book</button><button class="chip" type="button" data-join>Join the list</button></div>
 
 <footer class="footer"><span>© 2026 Pooja Prakash</span><span>ISBN 978-1-736284-00-0</span><span>Made for the woman becoming more herself.</span></footer>
 
@@ -510,6 +520,11 @@ img{display:block;max-width:100%}
 
   // Nav background once the page scrolls
   var nav = document.getElementById('nav');
+  // The header title appears only after the big hero title has scrolled out of view
+  var heroTitle = document.querySelector('.hero h1');
+  if('IntersectionObserver' in window && heroTitle){
+    new IntersectionObserver(function(es){ es.forEach(function(e){ nav.classList.toggle('show-brand', !e.isIntersecting); }); }, {threshold:0, rootMargin:'-80px 0px 0px 0px'}).observe(heroTitle);
+  } else nav.classList.add('show-brand');
   function onScroll(){ nav.classList.toggle('scrolled', window.scrollY > 40); }
   window.addEventListener('scroll', onScroll, {passive:true});
   onScroll();
@@ -707,7 +722,7 @@ img{display:block;max-width:100%}
 
   // ---- Launch TV ----
   // Put the launch film at assets/launch-video.mp4 (or .webm) and it plays on channel 03.
-  // Without it, the set shows a short title promo (04) and colour bars (05).
+  // Without it, the set shows the book's quote as a short promo (04) and colour bars (05).
   (function(){
     var tv = document.getElementById('tv'); if(!tv) return;
     var screenEl = document.getElementById('tvScreen'), pic = document.getElementById('tvPic'),
@@ -768,7 +783,7 @@ img{display:block;max-width:100%}
       if(mw > max){ pctx.translate(x, y); pctx.scale(max / mw, max / mw); x = 0; y = 0; }
       pctx.fillText(str, x, y); pctx.restore();
     }
-    var LOOP = 15;
+    var LOOP = 12.8;
     function drawPromo(t){
       var w = promo.width, h = promo.height, c = pctx, T = t % LOOP;
       var g = c.createLinearGradient(0, 0, w, h); g.addColorStop(0, '#120b20'); g.addColorStop(1, '#2d1a4f');
@@ -777,21 +792,18 @@ img{display:block;max-width:100%}
       rg.addColorStop(0, 'rgba(167,124,227,.32)'); rg.addColorStop(1, 'rgba(167,124,227,0)');
       c.fillStyle = rg; c.fillRect(0, 0, w, h);
       var cx = w / 2, jit = (Math.random() < .03 ? (Math.random() - .5) * w * .012 : 0);
-      // A: byline and title card
-      var a = fade(T, 0, 4.6);
-      txt('POOJA PRAKASH', '500 ' + Math.round(h * .05) + 'px "IBM Plex Mono", monospace', '#cbbfd6', cx + jit, h * .3, a, h * .012);
-      txt('A NEW BOOK', Math.round(h * .3 * (1 + T * .012)) + 'px "Bebas Neue", Impact, sans-serif', '#f5f2f7', cx + jit, h * .56, a, h * .01);
+      // A: the quote, in three cards
+      var lines = [['A MORE HONEST YOU', '#f5f2f7', .21], ['CREATES A MORE', '#cbbfd6', .17], ['MEANINGFUL LIFE.', '#a77ce3', .21]];
+      for(var q=0;q<3;q++){
+        var q0 = q * 2.4, q1 = q0 + 2.4;
+        if(T >= q0 && T < q1) txt(lines[q][0], Math.round(h * lines[q][2] * (1 + (T - q0) * .015)) + 'px "Bebas Neue", Impact, sans-serif', lines[q][1], cx + jit, h * .52, Math.min(1, (T - q0) / .3, (q1 - T) / .3), h * .008);
+      }
       // B: three words, hard cuts
       var words = [['AWARENESS.', '#f5f2f7'], ['CHOICES.', '#a77ce3'], ['IDENTITY.', '#d7b768']];
       for(var i=0;i<3;i++){
-        var s0 = 4.6 + i * 1.66, s1 = s0 + 1.66;
+        var s0 = 7.2 + i * 1.66, s1 = s0 + 1.66;
         if(T >= s0 && T < s1) txt(words[i][0], Math.round(h * .27) + 'px "Bebas Neue", Impact, sans-serif', words[i][1], cx + jit, h * .52, Math.min(1, (T - s0) / .12, (s1 - T) / .12), h * .008);
       }
-      // C: coming soon
-      var cfa = fade(T, 9.6, LOOP);
-      txt('COMING SOON', Math.round(h * .25) + 'px "Bebas Neue", Impact, sans-serif', '#f5f2f7', cx + jit, h * .45, cfa, h * .01);
-      txt('Join the launch list', 'italic ' + Math.round(h * .072) + 'px "Playfair Display", Georgia, serif', '#ddd1e6', cx, h * .66, cfa, 0);
-      if(Math.floor(t * 2) % 2) txt('↓', Math.round(h * .07) + 'px "IBM Plex Mono", monospace', '#d7b768', cx, h * .79, cfa, 0);
     }
     function drawBars(){
       var w = promo.width, h = promo.height, c = pctx;
@@ -872,7 +884,7 @@ img{display:block;max-width:100%}
       },
       next: function(){
         if(chName === 'film'){ try{ video.currentTime = Math.min((video.duration || 0) - .5, video.currentTime + 10); }catch(e){} }
-        else { var T = promoT % LOOP, cuts = [4.6, 9.6, LOOP], n = cuts.filter(function(c){ return c > T + .05; })[0]; promoT += n - T; }
+        else { var T = promoT % LOOP, cuts = [2.4, 4.8, 7.2, LOOP], n = cuts.filter(function(c){ return c > T + .05; })[0]; promoT += n - T; }
         osd(osdTl, '>>', 1200);
       },
       volup: function(){ vol = Math.min(20, vol + 2); applyVolume(); osdVolume(); },
