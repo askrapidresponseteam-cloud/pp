@@ -1,0 +1,620 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>A Life You Recognise - Pooja Prakash</title>
+<meta name="description" content="A Life You Recognise by Pooja Prakash. How to make choices that feel like yours." />
+<meta property="og:title" content="A Life You Recognise - Pooja Prakash" />
+<meta property="og:description" content="How to make choices that feel like yours. A new book by Pooja Prakash." />
+<meta property="og:image" content="assets/book-cover.jpg" />
+<meta property="og:type" content="book" />
+<meta name="theme-color" content="#0e0e0e" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230e0e0e'/%3E%3Cg fill='none' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M32 22c-7-5-15-5.5-21-3.5v24c6-2 14-1.5 21 3.5' stroke='%23f5f2f7'/%3E%3Cpath d='M32 22c7-5 15-5.5 21-3.5v24c-6-2-14-1.5-21 3.5' stroke='%23d7b768'/%3E%3Cpath d='M32 22v24' stroke='%23a77ce3'/%3E%3C/g%3E%3C/svg%3E" />
+<script>document.documentElement.classList.add('js')</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0a080d;--ink2:#120d18;--purple:#7f55b8;--purple2:#a77ce3;--white:#f5f2f7;--muted:#aaa1b2;--line:rgba(255,255,255,.12);--gold:#d7b768;--nav-h:84px}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:var(--nav-h)}
+body{margin:0;background:#0e0e0e url(assets/bg-grain.jpg) 0 0/480px 480px repeat;color:var(--white);font-family:'DM Sans',sans-serif;overflow-x:hidden}
+body.locked{overflow:hidden}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit}
+img{display:block;max-width:100%}
+:focus-visible{outline:2px solid var(--purple2);outline-offset:3px}
+
+/* Loader (only shown when JS runs, so the page never gets stuck behind it) */
+.loader{position:fixed;inset:0;background:#0e0e0e url(assets/bg-grain.jpg) 0 0/480px 480px;z-index:100;display:none;place-items:center;transition:opacity .7s ease,visibility .7s}
+.js .loader{display:grid}
+.loader.hide{opacity:0;visibility:hidden}
+.loader-inner{text-align:center}
+.mark{display:block;width:76px;height:57px;margin:auto;fill:none;stroke:#f5f2f7;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;overflow:visible}
+.mark .pg{stroke-dasharray:130;stroke-dashoffset:130;animation:draw 1s ease forwards}
+.mark .pg-r{animation-delay:.15s}
+.mark .spine{stroke:var(--purple2);stroke-dasharray:40;stroke-dashoffset:40;animation:draw .6s ease .5s forwards}
+.mark .turn{stroke:var(--gold);fill:rgba(215,183,104,.14);transform-origin:32px 24px;transform-box:view-box;opacity:0;animation:turn 1.15s cubic-bezier(.45,0,.55,1) .9s infinite}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes turn{0%{opacity:0;transform:scaleX(1)}12%{opacity:1}50%{transform:scaleX(0)}88%{opacity:1}100%{opacity:0;transform:scaleX(-1)}}
+.percent{font:12px 'Bebas Neue';letter-spacing:3px;margin-top:18px;color:#8c8295}
+
+/* Nav */
+.nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);z-index:30;display:flex;align-items:center;justify-content:space-between;padding:0 4vw;transition:height .3s ease,background .3s ease,border-color .3s ease;border-bottom:1px solid transparent}
+.nav.scrolled{--nav-h:68px;height:68px;background:rgba(14,14,14,.84);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom-color:var(--line)}
+.nav .brand{font:26px 'Bebas Neue';letter-spacing:2px;white-space:nowrap}
+.nav .brand span{color:var(--purple2)}
+.navlinks{display:flex;gap:28px;font-size:12px;letter-spacing:1.5px;text-transform:uppercase}
+.navlinks a{opacity:.75;transition:.25s}
+.navlinks a:hover{opacity:1;color:var(--purple2)}
+.menu{display:none;width:42px;height:42px;border:1px solid var(--line);background:transparent;cursor:pointer;position:relative;padding:0}
+.menu span{position:absolute;left:11px;height:2px;background:#fff;transition:transform .3s ease,top .3s ease,width .3s ease}
+.menu span:nth-child(1){top:16px;width:18px}
+.menu span:nth-child(2){top:23px;width:11px}
+.menu[aria-expanded="true"] span:nth-child(1){top:19px;width:18px;transform:rotate(45deg)}
+.menu[aria-expanded="true"] span:nth-child(2){top:19px;width:18px;transform:rotate(-45deg)}
+.mobile-menu{position:fixed;inset:0;z-index:29;background:#0e0e0e url(assets/bg-grain.jpg) 0 0/480px 480px;display:flex;flex-direction:column;justify-content:center;gap:10px;padding:0 8vw;opacity:0;visibility:hidden;transition:opacity .35s ease,visibility .35s}
+.mobile-menu.open{opacity:1;visibility:visible}
+.mobile-menu a{font:clamp(48px,14vw,80px)/1 'Bebas Neue';text-transform:uppercase;color:var(--white)}
+.mobile-menu a:hover{color:var(--purple2)}
+.mobile-menu .m-buy{color:var(--gold)}
+
+/* Hero */
+.hero{min-height:100svh;position:relative;display:grid;align-items:center;overflow:hidden;padding:110px 6vw 70px;background:radial-gradient(circle at 74% 44%,rgba(111,65,169,.24),transparent 31%)}
+.hero-grid{max-width:1400px;width:100%;margin:auto;display:grid;grid-template-columns:1.02fr .98fr;align-items:center;gap:3vw}
+.hero-copy{position:relative;z-index:2;min-width:0}
+.eyebrow{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--purple2);margin-bottom:18px}
+.hero h1{font:clamp(72px,11vw,180px)/.82 'Bebas Neue';letter-spacing:-1px;margin:0;text-transform:uppercase}
+.hero h1 .purple{color:#7950ad}
+.hero h1 .outline{-webkit-text-stroke:1px rgba(255,255,255,.35);color:transparent}
+.tagline{font:italic 20px/1.45 'Playfair Display';max-width:480px;margin:28px 0 30px;color:#ddd4e2}
+.cta{display:inline-flex;align-items:center;gap:18px;background:#f4f0f5;color:#100c13;padding:16px 22px;font-size:12px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;transition:.3s}
+.cta:hover{transform:translateY(-3px);background:var(--purple2);color:#fff}
+.cta .arrow{font-size:20px;line-height:1}
+.hero-note{display:flex;flex-wrap:wrap;gap:25px;margin-top:28px;color:#82788a;font-size:11px;text-transform:uppercase;letter-spacing:1.5px}
+.hero-visual{position:relative;min-height:650px;display:grid;place-items:center}
+.halo{position:absolute;width:540px;height:540px;max-width:100%;aspect-ratio:1;border:1px solid rgba(167,124,227,.22);border-radius:50%;box-shadow:0 0 100px rgba(111,65,169,.18) inset}
+/* Header buy button: the one gold element in the header */
+.nav-right{display:flex;align-items:center;gap:30px}
+.buy-btn{position:relative;display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:#140e19;padding:12px 20px;font-size:11px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;border:0;cursor:pointer;overflow:hidden;transition:background .3s,transform .3s}
+.buy-btn:before{content:"";position:absolute;top:0;bottom:0;left:-60%;width:40%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.6),transparent);transform:skewX(-20deg);animation:shine 5s ease-in-out 1.5s infinite}
+.buy-btn:hover{background:#e6c98a;transform:translateY(-2px)}
+.buy-btn svg{width:15px;height:15px;flex:none}
+@keyframes shine{0%,72%{left:-60%}100%{left:140%}}
+
+/* The book: a 3D object whose cover opens to reveal the order page */
+.hero-visual{perspective:2200px}
+.book-scene{--w:clamp(250px,24vw,340px);--h:calc(var(--w) * 1.4056);--d:26px;--shift:calc(var(--w) / 2);position:relative;z-index:2;width:var(--w);height:var(--h);transform-style:preserve-3d;transition:transform 1.1s cubic-bezier(.2,.7,.2,1)}
+.book-scene.open{transform:translateX(var(--shift))}
+.hero-visual{z-index:1}
+.hero-visual.is-open{z-index:5}
+.hero-copy{transition:opacity .6s ease,filter .6s ease}
+@media(min-width:851px){html .hero.book-open .hero-copy{opacity:.14;filter:blur(1px);pointer-events:none}}
+.book-float{position:absolute;inset:0;transform-style:preserve-3d;animation:float 7s ease-in-out infinite}
+.book-scene.open .book-float{animation-play-state:paused}
+@keyframes float{50%{transform:translateY(-12px)}}
+.book{position:absolute;inset:0;transform-style:preserve-3d;transform:rotateX(var(--rx,4deg)) rotateY(var(--ry,-24deg));transition:transform .5s ease-out;cursor:pointer;outline:none}
+.book:focus-visible .cover-front{outline:2px solid var(--gold);outline-offset:6px}
+.book-scene.open .book{transform:rotateX(4deg) rotateY(0deg);transition:transform 1.1s cubic-bezier(.2,.7,.2,1);cursor:default}
+.book .back{position:absolute;inset:0;background:#2a1c47;border-radius:5px 2px 2px 5px;transform:translateZ(calc(var(--d) / -2));box-shadow:0 45px 90px rgba(0,0,0,.65)}
+.book .edge{position:absolute;top:4px;bottom:4px;right:0;width:var(--d);transform:translateX(calc(var(--d) / 2)) rotateY(90deg);background:repeating-linear-gradient(90deg,#f6f0e6 0 2px,#dcd2c3 2px 3px)}
+.book .page{position:absolute;inset:3px 4px 3px 0;transform:translateZ(calc(var(--d) / 2 - 1px));background:linear-gradient(90deg,#cfc4b6 0,#efe8df 5%,#f7f2ec 18%,#f7f2ec 100%);color:#241a33;display:flex;flex-direction:column;justify-content:center;padding:0 9% 0 13%;text-align:center;border-radius:0 4px 4px 0}
+.book .cover{position:absolute;inset:0;transform-origin:left center;transform:translateZ(calc(var(--d) / 2));transform-style:preserve-3d;transition:transform 1.35s cubic-bezier(.6,.05,.2,1)}
+.book-scene.open .cover{transform:translateZ(calc(var(--d) / 2)) rotateY(-162deg)}
+.cover-front,.cover-inside{position:absolute;inset:0;-webkit-backface-visibility:hidden;backface-visibility:hidden;overflow:hidden}
+.cover-front{border-radius:2px 5px 5px 2px}
+.cover-front img{width:100%;height:100%;object-fit:cover}
+.cover-front:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.42) 0,rgba(255,255,255,.22) 1.2%,rgba(0,0,0,.14) 2.8%,transparent 6%),linear-gradient(115deg,rgba(255,255,255,.14),transparent 40%)}
+.cover-inside{transform:rotateY(180deg);border-radius:5px 2px 2px 5px;background:radial-gradient(circle at 2px 2px,rgba(215,183,104,.32) 1px,transparent 1.7px) 0 0/14px 14px,linear-gradient(90deg,#24173d,#2f2050)}
+.book-shadow{position:absolute;left:8%;right:-6%;bottom:-46px;height:40px;background:radial-gradient(ellipse at center,rgba(0,0,0,.65),transparent 70%);filter:blur(10px);transition:transform 1.1s}
+.pg-kicker{font:calc(var(--w) * .036) 'Bebas Neue';letter-spacing:.32em;color:#7f55b8}
+.pg-title{font:italic calc(var(--w) * .072)/1.1 'Playfair Display';margin:.45em 0 .85em;color:#1d1428}
+.stores{display:grid;gap:calc(var(--w) * .024)}
+.store{display:flex;justify-content:space-between;align-items:center;padding:.95em 1.1em;background:#1a1224;color:#f5f2f7;font:700 calc(var(--w) * .034)/1 'DM Sans';letter-spacing:.14em;text-transform:uppercase;transition:background .25s,transform .25s}
+.store:hover{background:#7f55b8;transform:translateX(3px)}
+.store.soon{background:transparent;color:#6d6178;box-shadow:inset 0 0 0 1px rgba(36,26,51,.22);cursor:default}
+.store.soon:hover{transform:none}
+.store small{font-size:.82em;font-weight:500;letter-spacing:.12em}
+.pg-alt{margin:1.2em 0 0;font-size:calc(var(--w) * .036);color:#5b4f69}
+.pg-alt a{color:#7f55b8;border-bottom:1px solid currentColor}
+.pg-close{position:absolute;top:3.5%;right:5%;width:2em;height:2em;background:none;border:0;font-size:calc(var(--w) * .05);color:#5b4f69;cursor:pointer;line-height:1}
+.book-hint{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);display:inline-flex;align-items:center;gap:12px;padding:10px 4px;background:none;border:0;font-size:11px;letter-spacing:2.2px;text-transform:uppercase;color:#cbbfd6;white-space:nowrap;cursor:pointer;transition:opacity .4s}
+.book-hint .dot{width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 0 rgba(215,183,104,.7);animation:pulse 2.2s infinite}
+.book-hint:hover{color:#fff}
+.is-open .book-hint{opacity:0;pointer-events:none}
+@keyframes pulse{70%{box-shadow:0 0 0 12px rgba(215,183,104,0)}100%{box-shadow:0 0 0 0 rgba(215,183,104,0)}}
+
+/* Floating buy pill, shown once the hero has scrolled away */
+.dock{position:fixed;left:50%;bottom:22px;z-index:35;display:flex;align-items:center;gap:12px;background:var(--gold);color:#140e19;border:0;padding:15px 24px;border-radius:999px;font:700 12px 'DM Sans';letter-spacing:1.8px;text-transform:uppercase;box-shadow:0 18px 40px rgba(0,0,0,.45),0 0 0 6px rgba(215,183,104,.14);cursor:pointer;transform:translate(-50%,160%);opacity:0;transition:transform .55s cubic-bezier(.2,.7,.2,1),opacity .4s,background .3s}
+.dock.show{transform:translate(-50%,0);opacity:1}
+.dock:hover{background:#e6c98a}
+.dock svg{width:15px;height:15px}
+
+/* Sections */
+.section{position:relative;padding:130px 7vw}
+.section.dark,.section.purple{background:transparent}
+.section+.section,.section+.launch{border-top:1px solid rgba(255,255,255,.06)}
+.section.purple{background:radial-gradient(ellipse 60% 70% at 50% 50%,rgba(111,65,169,.10),transparent 70%)}
+.split{max-width:1300px;margin:auto;display:grid;grid-template-columns:1fr 1fr;gap:8vw;align-items:center}
+.split > *{min-width:0}
+.kicker{font:18px 'Bebas Neue';letter-spacing:4px;color:var(--purple2)}
+.section h2,.launch h2{font:clamp(60px,8vw,120px)/.82 'Bebas Neue';text-transform:uppercase;margin:18px 0 25px}
+.section h2 span,.launch h2 span{color:var(--purple2)}
+.lead{font:20px/1.65 'Playfair Display';color:#ddd4e2;max-width:600px}
+.body{color:#a69baa;line-height:1.8;max-width:590px}
+.book-intro{align-items:end}
+.book-intro .lead{margin-top:0}
+
+.quote{max-width:1000px;margin:auto;text-align:center;padding:30px 0}
+.quote p{font:clamp(34px,5vw,70px)/1.05 'Playfair Display';font-style:italic;margin:0}
+.quote em{color:var(--purple2);font-style:normal}
+.quote small{display:block;margin-top:30px;color:#817687;text-transform:uppercase;letter-spacing:3px;font-size:10px}
+
+.themes{max-width:1300px;margin:auto;display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.theme{padding:35px 20px 40px;border-right:1px solid var(--line)}
+.theme:last-child{border-right:0}
+.num{font:44px 'Bebas Neue';color:var(--purple2)}
+.theme h3{font:20px/1.05 'Bebas Neue';letter-spacing:1px;text-transform:uppercase;margin:18px 0}
+.theme p{font-size:13px;line-height:1.65;color:#918697;margin:0}
+
+.launch{overflow:hidden;min-height:80vh;display:grid;place-items:center;text-align:center;padding:110px 7vw;background:radial-gradient(circle at 50% 40%,rgba(112,66,169,.24),transparent 34%)}
+.launch h2{font-size:clamp(80px,15vw,220px);margin:14px 0 0}
+.launch-text{font:italic 22px/1.5 'Playfair Display';color:#ddd1e6;max-width:520px;margin:22px auto 36px}
+/* Launch list sign-up */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.join{max-width:540px;margin:0 auto;text-align:center}
+.join-form,.join-done{display:none}
+.join[data-state="form"] .join-open,.join[data-state="sending"] .join-open,.join[data-state="done"] .join-open{display:none}
+.join[data-state="form"] .join-form,.join[data-state="sending"] .join-form{display:block;animation:rise .55s cubic-bezier(.2,.7,.2,1)}
+.join[data-state="done"] .join-done{display:block;animation:rise .7s cubic-bezier(.2,.7,.2,1)}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.join-field{display:flex;align-items:stretch;gap:6px;padding:6px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.18);transition:border-color .3s,box-shadow .3s}
+.join-field:focus-within{border-color:var(--purple2);box-shadow:0 0 0 4px rgba(167,124,227,.16)}
+.join-field.err{border-color:#e48f8f;animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-6px)}50%{transform:translateX(5px)}75%{transform:translateX(-3px)}}
+.join-field input{flex:1;min-width:0;background:none;border:0;outline:none;color:var(--white);font:16px 'DM Sans',sans-serif;padding:14px 14px}
+.join-field input::placeholder{color:#8d8395}
+.join .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.join-submit{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;min-width:150px;background:var(--gold);color:#140e19;border:0;padding:0 22px;font:700 12px 'DM Sans',sans-serif;letter-spacing:1.8px;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:background .3s}
+.join-submit:hover{background:#e6c98a}
+.join-submit .spin{position:absolute;width:18px;height:18px;border:2px solid rgba(20,14,25,.25);border-top-color:#140e19;border-radius:50%;opacity:0;animation:spin .8s linear infinite}
+.join[data-state="sending"] .join-submit .lbl{opacity:0}
+.join[data-state="sending"] .join-submit .spin{opacity:1}
+.join[data-state="sending"] .join-field{opacity:.75;pointer-events:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.join-msg{min-height:1.4em;margin:12px 0 0;font-size:13px;color:#eda3a3}
+.join-msg a{color:var(--gold);border-bottom:1px solid currentColor}
+.join-note{margin:4px 0 0;font-size:12px;color:#857b8c;letter-spacing:.2px}
+.join-done{position:relative;padding:38px 30px 32px;border:1px solid rgba(215,183,104,.35);background:linear-gradient(180deg,rgba(215,183,104,.07),rgba(215,183,104,0))}
+.tick{display:block;width:62px;height:62px;margin:0 auto 18px;fill:none;stroke:var(--gold);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tick circle{stroke-dasharray:180;stroke-dashoffset:180}
+.tick path{stroke-dasharray:40;stroke-dashoffset:40}
+.join[data-state="done"] .tick circle{animation:draw .7s ease .1s forwards}
+.join[data-state="done"] .tick path{animation:draw .4s ease .7s forwards}
+.join-done h3{margin:0;font:clamp(34px,4vw,46px)/1 'Bebas Neue';letter-spacing:1px;text-transform:uppercase}
+.join-done h3 span{color:var(--purple2)}
+.join-done p{margin:12px auto 0;max-width:400px;color:#cfc4d8;font-size:15px;line-height:1.6}
+.join-done strong{color:#fff;font-weight:600;word-break:break-all}
+.share{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:24px}
+.share button,.share a{display:inline-flex;align-items:center;gap:8px;padding:11px 16px;background:transparent;border:1px solid rgba(255,255,255,.2);color:var(--white);font:600 11px 'DM Sans',sans-serif;letter-spacing:1.6px;text-transform:uppercase;cursor:pointer;transition:border-color .3s,color .3s}
+.share button:hover,.share a:hover{border-color:var(--gold);color:var(--gold)}
+.join-reset{margin-top:18px;background:none;border:0;color:#857b8c;font-size:12px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.sparks{position:absolute;left:50%;top:69px;width:0;height:0;pointer-events:none}
+.sparks i{position:absolute;width:6px;height:6px;border-radius:50%;background:var(--gold);opacity:0}
+.join[data-state="done"] .sparks i{animation:spark .9s ease-out .75s forwards}
+@keyframes spark{0%{opacity:1;transform:translate(0,0) scale(1)}100%{opacity:0;transform:translate(var(--x),var(--y)) scale(.3)}}
+@media(max-width:520px){.join-field{flex-direction:column}.join-submit{min-height:50px}.join-done{padding:32px 20px 26px}}
+
+
+.footer{padding:35px 6vw;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:20px;color:#756b7c;font-size:11px;letter-spacing:1.5px;text-transform:uppercase}
+
+/* Reveal animation only hides content when JS is running */
+.js .reveal{opacity:0;transform:translateY(35px);transition:opacity .9s ease,transform .9s ease}
+.js .reveal.on{opacity:1;transform:none}
+
+@media(max-width:1100px){
+  .themes{grid-template-columns:repeat(3,1fr)}
+  .theme{border-bottom:1px solid var(--line)}
+  .theme:nth-child(3n){border-right:0}
+  .theme:nth-child(n+4){border-bottom:0}
+}
+@media(max-width:850px){
+  :root{--nav-h:68px}
+  .nav{height:68px}
+  .navlinks{display:none}
+  .menu{display:block}
+  .hero{padding:110px 7vw 60px}
+  .hero-grid,.split{grid-template-columns:1fr}
+  .hero h1{font-size:clamp(60px,21vw,140px)}
+  .hero-visual{min-height:auto;margin-top:30px;padding:30px 0}
+  .book-scene{--w:min(62vw,250px);--shift:calc(var(--w) * .22)}
+  .hero-visual{padding:20px 0 90px}
+  .buy-btn{display:none}
+  .halo{width:300px;height:300px}
+  .halo{width:340px;height:340px}
+  .section{padding:90px 7vw}
+  .split{gap:50px}
+  .themes{grid-template-columns:1fr 1fr}
+  .theme,.theme:nth-child(3n),.theme:nth-child(n+4){border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .theme:nth-child(2n){border-right:0}
+  .theme:last-child{grid-column:1/-1;border-right:0;border-bottom:0}
+  .footer{flex-direction:column}
+}
+@media(max-width:420px){
+  .themes{grid-template-columns:1fr}
+  .theme,.theme:nth-child(2n){border-right:0}
+}
+@media(prefers-reduced-motion:reduce){
+  .mark .pg,.mark .spine,.tick circle,.tick path{stroke-dashoffset:0!important}
+  .mark .turn{opacity:1}
+  .book-float,.buy-btn:before,.book-hint .dot{animation:none!important}
+  html{scroll-behavior:auto}
+  *,*:before,*:after{transition:none!important;animation:none!important}
+  .js .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+<div class="loader" id="loader" aria-hidden="true"><div class="loader-inner"><svg class="mark" viewBox="0 0 64 48" aria-hidden="true"><path class="pg pg-l" d="M32 12C24 6 13 5.5 4 8.5v31c9-3 20-2.5 28 3.5"/><path class="pg pg-r" d="M32 12c8-6 19-6.5 28-3.5v31c-9-3-20-2.5-28 3.5"/><path class="spine" d="M32 12v31"/><path class="turn" d="M32 12c7-5 16-6 24-4v29c-8-2-17-1-24 4z"/></svg><div class="percent" id="percent">0%</div></div></div>
+
+<nav class="nav" id="nav">
+  <a class="brand" href="#top">A LIFE <span>YOU</span> RECOGNISE</a>
+  <div class="nav-right"><div class="navlinks"><a href="#book">The Book</a><a href="#inside">Inside</a><a href="#author">Author</a><a href="#launch">Launch</a></div><button class="buy-btn" type="button" data-open-book><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 5h6a4 4 0 0 1 4 4v11a3 3 0 0 0-3-3H2z"/><path d="M22 5h-6a4 4 0 0 0-4 4v11a3 3 0 0 1 3-3h7z"/></svg>Get the book</button></div>
+  <button class="menu" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu"><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <a href="#book">The Book</a><a href="#inside">Inside</a><a href="#author">Author</a><a href="#launch">Launch</a><a href="#top" class="m-buy" data-open-book>Get the book</a>
+</div>
+
+<main id="top">
+<section class="hero">
+  <div class="hero-grid">
+    <div class="hero-copy reveal">
+      <div class="eyebrow">A new book by Pooja Prakash</div>
+      <h1>A Life<br><span class="purple">You</span><br><span class="outline">Recognise</span></h1>
+      <p class="tagline">How to make choices that feel like yours.</p>
+      <a class="cta" href="#book">Enter the story <span class="arrow" aria-hidden="true">↗</span></a>
+    </div>
+    <div class="hero-visual reveal">
+      <div class="halo"></div>
+      <div class="book-scene" id="bookScene">
+        <div class="book-shadow" aria-hidden="true"></div>
+        <div class="book-float">
+          <div class="book" id="book3d" role="button" tabindex="0" aria-label="Open the book to order your copy">
+            <div class="back" aria-hidden="true"></div>
+            <div class="edge" aria-hidden="true"></div>
+            <div class="page" id="orderPage" inert>
+              <button class="pg-close" type="button" id="closeBook" aria-label="Close the book">×</button>
+              <div class="pg-kicker">Order your copy</div>
+              <p class="pg-title">Choose where to get it</p>
+              <div class="stores" id="stores"></div>
+              <p class="pg-alt">Not out yet? <a href="#launch" data-join>Join the launch list</a></p>
+            </div>
+            <div class="cover">
+              <div class="cover-front"><img src="assets/book-cover.jpg" alt="Front cover of A Life You Recognise by Pooja Prakash" width="900" height="1265" fetchpriority="high"></div>
+              <div class="cover-inside" aria-hidden="true"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="book-hint" type="button" data-open-book><span class="dot"></span>Tap the book to get your copy</button>
+    </div>
+  </div>
+</section>
+
+<section class="section dark" id="book">
+  <div class="split book-intro">
+    <div class="reveal">
+      <div class="kicker">THE BOOK</div>
+      <h2>Decide what<br><span>happens</span><br>next.</h2>
+    </div>
+    <div class="reveal">
+      <p class="lead">You don’t need to have it all figured out. You just need to recognise what’s yours.</p>
+      <p class="body">A Life You Recognise is a thoughtful and practical guide for women ready to pause, reflect and make choices that truly feel like their own. It is about more than finding yourself. It is about noticing the life you are living, understanding how you got there, and deciding what comes after.</p>
+      <p class="body">With honesty, warmth and clarity, it explores the expectations, relationships, beliefs and everyday decisions that shape a life, and gives you the tools to choose differently. You do not have to follow the path you were given.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section purple">
+  <figure class="quote reveal" style="margin:auto">
+    <p>“A more honest you creates a more <em>meaningful life.</em>”</p>
+    <small>Pooja Prakash</small>
+  </figure>
+</section>
+
+<section class="section dark" id="inside">
+  <div class="reveal" style="max-width:1300px;margin:auto">
+    <div class="kicker">INSIDE, YOU’LL DISCOVER</div>
+    <h2>What becomes<br><span>possible</span></h2>
+  </div>
+  <div class="themes reveal">
+    <article class="theme"><div class="num">01</div><h3>Recognise</h3><p>Separate what is truly yours from what you inherited or absorbed.</p></article>
+    <article class="theme"><div class="num">02</div><h3>Boundaries</h3><p>Say yes and no with more clarity, without carrying unnecessary guilt.</p></article>
+    <article class="theme"><div class="num">03</div><h3>Values</h3><p>Make decisions that reflect what actually matters to you.</p></article>
+    <article class="theme"><div class="num">04</div><h3>Relationships</h3><p>Understand the patterns and expectations that shape connection.</p></article>
+    <article class="theme"><div class="num">05</div><h3>Becoming</h3><p>Build a life that feels authentic, not merely acceptable.</p></article>
+  </div>
+</section>
+
+<section class="section purple" id="author">
+  <div class="split book-intro">
+    <div class="reveal">
+      <div class="kicker">ABOUT THE AUTHOR</div>
+      <h2>Meet<br><span>Pooja</span></h2>
+      <p class="lead">A writer exploring the questions that sit underneath everyday life.</p>
+    </div>
+    <div class="reveal">
+      <p class="body">Pooja Prakash writes about how we make decisions, how expectations shape us, how relationships influence who we become, and how we build a life that feels genuinely our own.</p>
+      <p class="body">She believes a meaningful life does not have to follow a particular formula. It requires attention, honesty, courage and the willingness to keep choosing.</p>
+    </div>
+  </div>
+</section>
+
+<section class="launch" id="launch">
+  <div class="reveal">
+    <div class="kicker">THE LAUNCH</div>
+    <h2>YOUR<br><span>CHAPTER</span><br>STARTS.</h2>
+    <p class="launch-text">Be the first to hear about the launch, early readings and where to find the book.</p>
+    <div class="join" id="join" data-state="idle">
+      <button class="cta join-open" type="button" data-join>Join the launch list <span class="arrow" aria-hidden="true">↗</span></button>
+      <form class="join-form" id="joinForm" novalidate>
+        <label class="sr-only" for="joinEmail">Email address</label>
+        <div class="join-field" id="joinField">
+          <input id="joinEmail" name="email" type="email" inputmode="email" autocomplete="email" placeholder="Your email address" required>
+          <input class="hp" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <button class="join-submit" type="submit"><span class="lbl">Count me in</span><span class="spin" aria-hidden="true"></span></button>
+        </div>
+        <p class="join-msg" id="joinMsg" role="status" aria-live="polite"></p>
+        <p class="join-note">One email when the book is out, plus the occasional early reading. Unsubscribe any time.</p>
+      </form>
+      <div class="join-done" id="joinDone" tabindex="-1">
+        <span class="sparks" aria-hidden="true"><i style="--x:-70px;--y:-30px"></i><i style="--x:-48px;--y:-62px"></i><i style="--x:0px;--y:-78px"></i><i style="--x:48px;--y:-62px"></i><i style="--x:70px;--y:-30px"></i><i style="--x:-60px;--y:22px"></i><i style="--x:60px;--y:22px"></i><i style="--x:-24px;--y:-70px"></i><i style="--x:24px;--y:-70px"></i></span>
+        <svg class="tick" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="28"/><path d="M20 33l8 8 16-17"/></svg>
+        <h3>You’re on <span>the list</span></h3>
+        <p>We’ll write to <strong id="joinedEmail"></strong> the moment the book is out.</p>
+        <div class="share">
+          <button type="button" id="shareBtn">Share with a friend</button>
+          <a id="waShare" target="_blank" rel="noopener">WhatsApp</a>
+        </div>
+        <button class="join-reset" type="button" id="joinReset">Use a different email</button>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+<button class="dock" id="dock" type="button" data-open-book aria-label="Get the book"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 5h6a4 4 0 0 1 4 4v11a3 3 0 0 0-3-3H2z"/><path d="M22 5h-6a4 4 0 0 0-4 4v11a3 3 0 0 1 3-3h7z"/></svg>Get the book</button>
+
+<footer class="footer"><span>© 2026 Pooja Prakash</span><span>ISBN 978-1-736284-00-0</span><span>Made for the woman becoming more herself.</span></footer>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Loader: counts up, but only finishes once the page (fonts + images) has loaded, capped at 4s
+  var loader = document.getElementById('loader'), pct = document.getElementById('percent');
+  var p = 0, ready = false, done = false;
+  function finish(){ if(done) return; done = true; pct.textContent = '100%'; setTimeout(function(){ loader.classList.add('hide'); }, 250); }
+  window.addEventListener('load', function(){ ready = true; });
+  setTimeout(function(){ ready = true; }, 4000);
+  if(reduce){ loader.classList.add('hide'); }
+  else {
+    var tick = setInterval(function(){
+      p += Math.floor(Math.random()*12) + 4;
+      if(!ready) p = Math.min(p, 92);
+      if(p >= 100){ clearInterval(tick); finish(); return; }
+      pct.textContent = p + '%';
+    }, 70);
+  }
+
+  // Reveal on scroll
+  var items = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window && !reduce){
+    var obs = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('on'); obs.unobserve(e.target); } });
+    }, {threshold:.12});
+    items.forEach(function(e){ obs.observe(e); });
+  } else {
+    items.forEach(function(e){ e.classList.add('on'); });
+  }
+
+  // Nav background once the page scrolls
+  var nav = document.getElementById('nav');
+  function onScroll(){ nav.classList.toggle('scrolled', window.scrollY > 40); }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // Mobile menu
+  var btn = document.getElementById('menuBtn'), menu = document.getElementById('mobileMenu');
+  function setMenu(open){
+    btn.setAttribute('aria-expanded', open);
+    btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    menu.classList.toggle('open', open);
+    menu.setAttribute('aria-hidden', !open);
+    document.body.classList.toggle('locked', open);
+  }
+  btn.addEventListener('click', function(){ setMenu(btn.getAttribute('aria-expanded') !== 'true'); });
+  menu.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ setMenu(false); }); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') setMenu(false); });
+  window.addEventListener('resize', function(){ if(window.innerWidth > 850) setMenu(false); });
+
+  // Store links: add the real URLs when they are live. An empty url shows "Soon".
+  var STORES = [
+    {name:'Amazon',   url:''},
+    {name:'Flipkart', url:''},
+    {name:'Kindle',   url:''}
+  ];
+  var storesEl = document.getElementById('stores');
+  STORES.forEach(function(st){
+    var el = document.createElement(st.url ? 'a' : 'span');
+    el.className = 'store' + (st.url ? '' : ' soon');
+    if(st.url){ el.href = st.url; el.target = '_blank'; el.rel = 'noopener'; }
+    el.innerHTML = '<span>' + st.name + '</span><small>' + (st.url ? 'Buy ↗' : 'Soon') + '</small>';
+    storesEl.appendChild(el);
+  });
+
+  // Open and close the book
+  var scene = document.getElementById('bookScene'), book3d = document.getElementById('book3d'),
+      page = document.getElementById('orderPage'), visual = scene.parentNode, hero = document.querySelector('.hero');
+  var openedAt = 0;
+  function openBook(){
+    if(scene.classList.contains('open')) return;
+    if(window.matchMedia('(min-width:851px)').matches){
+      var r = scene.getBoundingClientRect();
+      scene.style.setProperty('--shift', Math.max(0, Math.min(r.width / 2, innerWidth - 20 - r.right)) + 'px');
+    }
+    openedAt = Date.now();
+    scene.classList.add('open'); visual.classList.add('is-open'); hero.classList.add('book-open');
+    page.removeAttribute('inert');
+    book3d.removeAttribute('role'); book3d.removeAttribute('tabindex'); book3d.removeAttribute('aria-label');
+    book3d.style.removeProperty('--rx'); book3d.style.removeProperty('--ry');
+    setTimeout(function(){ var f = page.querySelector('.store:not(.soon), .pg-alt a'); if(f) f.focus({preventScroll:true}); }, reduce ? 0 : 900);
+  }
+  function closeBook(){
+    if(!scene.classList.contains('open')) return;
+    scene.classList.remove('open'); visual.classList.remove('is-open'); hero.classList.remove('book-open');
+    setTimeout(function(){ if(!scene.classList.contains('open')) scene.style.removeProperty('--shift'); }, 1200);
+    page.setAttribute('inert','');
+    book3d.setAttribute('role','button'); book3d.setAttribute('tabindex','0'); book3d.setAttribute('aria-label','Open the book to order your copy');
+  }
+  book3d.addEventListener('click', function(e){ if(e.target.closest('.page')) return; if(!scene.classList.contains('open')) openBook(); });
+  book3d.addEventListener('keydown', function(e){ if(!scene.classList.contains('open') && (e.key === 'Enter' || e.key === ' ')){ e.preventDefault(); openBook(); } });
+  document.getElementById('closeBook').addEventListener('click', function(e){ e.stopPropagation(); closeBook(); book3d.focus(); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeBook(); });
+  // Tap anywhere outside the open page to close the book
+  document.addEventListener('click', function(e){
+    if(!scene.classList.contains('open') || Date.now() - openedAt < 400) return;
+    if(e.target.closest('.page') || e.target.closest('[data-open-book]') || e.target.closest('[data-join]')) return;
+    closeBook();
+  });
+
+  // Every "Get the book" button brings the reader to the book and opens it
+  document.querySelectorAll('[data-open-book]').forEach(function(b){
+    b.addEventListener('click', function(e){
+      e.preventDefault();
+      if(typeof setMenu === 'function') setMenu(false);
+      var r = hero.getBoundingClientRect();
+      if(r.bottom > innerHeight * .6 && r.top > -innerHeight * .3){ openBook(); return; }
+      window.scrollTo({top:0, behavior: reduce ? 'auto' : 'smooth'});
+      setTimeout(openBook, reduce ? 0 : 750);
+    });
+  });
+
+  // Gentle tilt toward the cursor while the book is closed
+  if(!reduce && window.matchMedia('(pointer:fine)').matches){
+    visual.addEventListener('mousemove', function(e){
+      if(scene.classList.contains('open')) return;
+      var r = visual.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+      book3d.style.setProperty('--ry', (-24 + x * 16).toFixed(2) + 'deg');
+      book3d.style.setProperty('--rx', (4 - y * 10).toFixed(2) + 'deg');
+    });
+    visual.addEventListener('mouseleave', function(){ book3d.style.removeProperty('--ry'); book3d.style.removeProperty('--rx'); });
+  }
+
+  // Floating pill appears once the hero is out of view
+  var dock = document.getElementById('dock');
+  var seen = {hero:true, launch:false, footer:false};
+  function updateDock(){
+    var menuOpen = document.body.classList.contains('locked');
+    dock.classList.toggle('show', !seen.hero && !seen.launch && !seen.footer && !menuOpen);
+  }
+  if('IntersectionObserver' in window){
+    var watch = {hero:hero, launch:document.getElementById('launch'), footer:document.querySelector('.footer')};
+    var dio = new IntersectionObserver(function(es){
+      es.forEach(function(e){ seen[e.target.dataset.dockKey] = e.isIntersecting; });
+      updateDock();
+    }, {threshold:0, rootMargin:'0px 0px -90px 0px'});
+    Object.keys(watch).forEach(function(k){ watch[k].dataset.dockKey = k; dio.observe(watch[k]); });
+    new MutationObserver(updateDock).observe(document.body, {attributes:true, attributeFilter:['class']});
+  }
+
+  // ---- Launch list ----
+  // Sign-ups are delivered by FormSubmit (free, no account) to the address below.
+  // The very first sign-up triggers a one-time "activate this form" email to that inbox; click it once and every sign-up after that arrives as an email.
+  var JOIN_TO = 'hello@alifeyourecognise.com';
+  var JOIN_ENDPOINT = 'https://formsubmit.co/ajax/' + JOIN_TO;
+  var STORE_KEY = 'alyr-launch-list';
+
+  var join = document.getElementById('join'), form = document.getElementById('joinForm'),
+      field = document.getElementById('joinField'), email = document.getElementById('joinEmail'),
+      msg = document.getElementById('joinMsg'), joinDoneEl = document.getElementById('joinDone'),
+      joinedEmail = document.getElementById('joinedEmail');
+  function setJoin(state){ join.dataset.state = state; }
+  function remember(v){ try{ localStorage.setItem(STORE_KEY, v); }catch(e){} }
+  function recall(){ try{ return localStorage.getItem(STORE_KEY); }catch(e){ return null; } }
+  function forget(){ try{ localStorage.removeItem(STORE_KEY); }catch(e){} }
+  function showDone(v, animate){
+    joinedEmail.textContent = v;
+    setJoin('done');
+    if(animate) setTimeout(function(){ joinDoneEl.focus({preventScroll:true}); }, 50);
+  }
+  function openJoin(){
+    if(join.dataset.state === 'done') return;
+    setJoin('form'); msg.textContent = ''; field.classList.remove('err');
+    setTimeout(function(){ email.focus({preventScroll:true}); }, 60);
+  }
+
+  // Already joined on this device: show the confirmation instead of the form
+  var saved = recall(); if(saved) showDone(saved, false);
+
+  // Every "Join the launch list" trigger: go to the launch section and open the form
+  document.querySelectorAll('[data-join]').forEach(function(t){
+    t.addEventListener('click', function(e){
+      e.preventDefault(); e.stopPropagation();
+      if(typeof closeBook === 'function') closeBook();
+      var launch = document.getElementById('launch');
+      if(!t.closest('#launch')) join.scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block:'center'});
+      setTimeout(openJoin, t.closest('#launch') ? 0 : (reduce ? 0 : 650));
+    });
+  });
+
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var v = email.value.trim();
+    field.classList.remove('err'); void field.offsetWidth;
+    if(!EMAIL_RE.test(v)){
+      field.classList.add('err');
+      msg.textContent = v ? 'That email doesn’t look quite right. Mind checking it?' : 'Pop in your email address to join.';
+      email.focus(); return;
+    }
+    if(form.querySelector('.hp').value) { showDone(v, true); return; }  // bots
+    setJoin('sending'); msg.textContent = '';
+    fetch(JOIN_ENDPOINT, {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body: JSON.stringify({ email:v, _subject:'New launch list sign-up: A Life You Recognise', _template:'table', _captcha:'false', source: location.href })
+    }).then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ return {ok:r.ok, j:j}; }); })
+      .then(function(res){
+        var m = String((res.j && res.j.message) || '');
+        if(res.ok && (String(res.j.success) === 'true' || /activat/i.test(m))){
+          remember(v); showDone(v, true);
+        } else { throw new Error(m || 'failed'); }
+      })
+      .catch(function(){
+        setJoin('form');
+        var mail = 'mailto:' + JOIN_TO + '?subject=' + encodeURIComponent('Add me to the launch list') + '&body=' + encodeURIComponent('Please add ' + v + ' to the launch list for A Life You Recognise.');
+        msg.innerHTML = 'We couldn’t reach the list just now. <a href="' + mail + '">Send it by email instead</a> or try again.';
+      });
+  });
+  email.addEventListener('input', function(){ if(field.classList.contains('err')){ field.classList.remove('err'); msg.textContent=''; } });
+
+  document.getElementById('joinReset').addEventListener('click', function(){
+    forget(); email.value = ''; setJoin('idle'); openJoin();
+  });
+
+  // Sharing
+  var shareText = 'I just joined the launch list for A Life You Recognise by Pooja Prakash. Thought you might like it too:';
+  var shareUrl = location.protocol.indexOf('http') === 0 ? location.href.split('#')[0] : 'https://alifeyourecognise.com';
+  document.getElementById('waShare').href = 'https://wa.me/?text=' + encodeURIComponent(shareText + ' ' + shareUrl);
+  var shareBtn = document.getElementById('shareBtn');
+  shareBtn.addEventListener('click', function(){
+    if(navigator.share){ navigator.share({title:'A Life You Recognise', text:shareText, url:shareUrl}).catch(function(){}); return; }
+    var done2 = function(){ shareBtn.textContent = 'Link copied'; setTimeout(function(){ shareBtn.textContent = 'Share with a friend'; }, 2200); };
+    if(navigator.clipboard) navigator.clipboard.writeText(shareUrl).then(done2, done2); else done2();
+  });
+})();
+</script>
+</body>
+</html>
