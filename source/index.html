@@ -605,7 +605,7 @@ img{display:block;max-width:100%;-webkit-user-drag:none;-webkit-touch-callout:no
 
   // ---- Launch TV ----
   // Put the launch film at assets/launch-video.mp4 (or .webm) and it plays on channel 03.
-  // Without it, the set shows a short promo (04): the book's quote, three words, then the book on a turntable. Colour bars are on 05.
+  // Without it, the set shows a short promo (06): the book's quote, three words, then the book on a turntable. Colour bars are on 05.
   (function(){
     var tv = document.getElementById('tv'); if(!tv) return;
     var screenEl = document.getElementById('tvScreen'), pic = document.getElementById('tvPic'),
@@ -615,8 +615,8 @@ img{display:block;max-width:100%;-webkit-user-drag:none;-webkit-touch-callout:no
     var pctx = promo.getContext('2d'), sctx = stat.getContext('2d');
     var on = false, visible = false, hasVideo = false, chName = 'promo', vol = 0, paused = false, stopped = false,
         promoT = 0, lastT = 0, raf = 0, staticUntil = 0, autoDone = false, userOff = false, audio = null;
-    var CH = {film:'03', promo:'04', bars:'05'};
-    function chans(){ return hasVideo ? ['film','promo','bars'] : ['promo','bars']; }
+    var CH = {film:'03', bars:'05', promo:'06'};
+    function chans(){ return hasVideo ? ['film','bars','promo'] : ['bars','promo']; }
 
     video.addEventListener('loadedmetadata', function(){
       var first = !hasVideo; hasVideo = true;
