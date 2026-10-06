@@ -154,7 +154,7 @@ img{display:block;max-width:100%;-webkit-user-drag:none;-webkit-touch-callout:no
 .tv-pic video{filter:saturate(1.18) contrast(1.08) brightness(1.04) blur(.25px)}
 .tv-pic canvas{filter:blur(.3px)}
 .tv-pic [hidden]{display:none}
-#tvStatic{z-index:3;opacity:0;image-rendering:auto}
+#tvStatic{z-index:3;opacity:0;image-rendering:auto;pointer-events:none}
 #tvStatic.on{opacity:1}
 .tv-blue{z-index:2;background:#1b2fd6;display:none}
 .tv[data-stopped="true"] .tv-blue{display:block}
@@ -218,6 +218,7 @@ img{display:block;max-width:100%;-webkit-user-drag:none;-webkit-touch-callout:no
 .join[data-state="sending"] .join-field{opacity:.75;pointer-events:none}
 @keyframes spin{to{transform:rotate(360deg)}}
 .join-msg{min-height:1.4em;margin:12px 0 0;font-size:13px;color:#eda3a3}
+.join-msg.note{color:#cbbfd6}
 .join-msg a{color:var(--gold);border-bottom:1px solid currentColor}
 .join-note{margin:4px 0 0;font-size:12px;color:#857b8c;letter-spacing:.2px}
 .join-done{position:relative;padding:38px 30px 32px;border:1px solid rgba(215,183,104,.35);background:linear-gradient(180deg,rgba(215,183,104,.07),rgba(215,183,104,0))}
@@ -538,7 +539,7 @@ img{display:block;max-width:100%;-webkit-user-drag:none;-webkit-touch-callout:no
   }
   function openJoin(){
     if(join.dataset.state === 'done') return;
-    setJoin('form'); msg.textContent = ''; field.classList.remove('err');
+    setJoin('form'); msg.textContent = ''; msg.classList.remove('note'); field.classList.remove('err');
     setTimeout(function(){ email.focus({preventScroll:true}); }, 60);
   }
 
@@ -563,7 +564,7 @@ img{display:block;max-width:100%;-webkit-user-drag:none;-webkit-touch-callout:no
     field.classList.remove('err'); void field.offsetWidth;
     if(!EMAIL_RE.test(v)){
       field.classList.add('err');
-      msg.textContent = v ? 'That email doesn’t look quite right. Mind checking it?' : 'Pop in your email address to join.';
+      msg.classList.remove('note'); msg.textContent = v ? 'That email doesn’t look quite right. Mind checking it?' : 'Pop in your email address to join.';
       email.focus(); return;
     }
     if(form.querySelector('.hp').value) { showDone(v, true); return; }  // bots
@@ -582,7 +583,7 @@ img{display:block;max-width:100%;-webkit-user-drag:none;-webkit-touch-callout:no
       .catch(function(){
         setJoin('form');
         var mail = 'mailto:' + JOIN_TO + '?subject=' + encodeURIComponent('Add me to the launch list') + '&body=' + encodeURIComponent('Please add ' + v + ' to the launch list for A Life You Recognise.');
-        msg.innerHTML = 'We couldn’t reach the list just now. <a href="' + mail + '">Send it by email instead</a> or try again.';
+        msg.classList.remove('note'); msg.innerHTML = 'We couldn’t reach the list just now. <a href="' + mail + '">Send it by email instead</a> or try again.';
       });
   });
   email.addEventListener('input', function(){ if(field.classList.contains('err')){ field.classList.remove('err'); msg.textContent=''; } });
@@ -930,28 +931,54 @@ img{display:block;max-width:100%;-webkit-user-drag:none;-webkit-touch-callout:no
     };
 
     // ---- Disc menu: "Where to buy" ----
-    // Store links: add the real URLs when they are live. An empty url shows "Soon".
+    // Store links live in /stores.json so they can be changed without touching this page.
+    // Built-in fallback (used only if stores.json cannot be loaded): every store shows "Soon".
     var STORES = [
-      {name:'Amazon',   url:''},
-      {name:'Flipkart', url:''},
-      {name:'Kindle',   url:''}
+      {name:'Amazon', url:'', url_in:''},
+      {name:'Flipkart', url:'', india_only:true},
+      {name:'Kindle', url:'', url_in:''}
     ];
-    var menuEl = document.getElementById('tvMenu'), tmList = document.getElementById('tmList'), menuOpen = false, menuSel = 0, menuResume = false;
-    var menuItems = STORES.map(function(st){
-      return {label:st.name, note:st.url ? 'Buy' : 'Soon', run:function(){ if(st.url) window.open(st.url, '_blank', 'noopener'); else osd(osdBot, st.name + ' - coming soon', 1800); }};
-    }).concat([
-      {label:'Get notified', note:'', run:function(){ closeMenu(); join.scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block:'center'}); setTimeout(openJoin, reduce ? 0 : 550); }},
-      {label:'Return', note:'', run:function(){ closeMenu(); }}
-    ]);
-    menuItems.forEach(function(it, k){
-      var b = document.createElement('button');
-      b.type = 'button'; b.className = 'tm-item'; b.setAttribute('role', 'menuitem');
-      b.innerHTML = '<span>' + it.label + '</span>' + (it.note ? '<small>' + it.note + '</small>' : '');
-      b.addEventListener('mouseenter', function(){ selectItem(k); });
-      b.addEventListener('focus', function(){ selectItem(k); });
-      b.addEventListener('click', function(e){ e.stopPropagation(); selectItem(k); it.run(); });
-      it.el = b; tmList.appendChild(b);
-    });
+    var IN_INDIA = (function(){
+      try{ var tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; if(/^Asia\/(Kolkata|Calcutta)$/.test(tz)) return true; }catch(e){}
+      return /-IN$/i.test(navigator.language || '');
+    })();
+    function safeUrl(u){ return typeof u === 'string' && /^https:\/\/[^\s"'<>]+$/i.test(u.trim()) ? u.trim() : ''; }
+    var menuEl = document.getElementById('tvMenu'), tmList = document.getElementById('tmList'), menuOpen = false, menuSel = 0, menuResume = false, menuItems = [];
+    function goNotify(note){
+      closeMenu();
+      join.scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block:'center'});
+      setTimeout(function(){ openJoin(); if(note && join.dataset.state === 'form') msgNote(note); }, reduce ? 0 : 550);
+    }
+    function msgNote(t){ msg.textContent = t; msg.classList.add('note'); }
+    function buildMenu(stores){
+      tmList.innerHTML = ''; menuItems = [];
+      stores.filter(function(st){ return st && st.name && !(st.india_only && !IN_INDIA); }).forEach(function(st){
+        var url = safeUrl(IN_INDIA && st.url_in ? st.url_in : st.url) || safeUrl(st.url);
+        menuItems.push(url
+          ? {label:st.name, note:'Buy', href:url, run:function(){ osd(osdBot, 'Opening ' + st.name, 1600); }}
+          : {label:st.name, note:'Soon', run:function(){ osd(osdBot, st.name + ' - coming soon', 1800); setTimeout(function(){ goNotify('We will email you the moment it is on ' + st.name + '.'); }, 700); }});
+      });
+      menuItems.push({label:'Get notified', note:'', run:function(){ goNotify(''); }});
+      menuItems.push({label:'Return', note:'', run:function(){ closeMenu(); }});
+      menuItems.forEach(function(it, k){
+        var el = document.createElement(it.href ? 'a' : 'button');
+        el.className = 'tm-item'; el.setAttribute('role', 'menuitem');
+        if(it.href){ el.href = it.href; el.target = '_blank'; el.rel = 'noopener noreferrer'; }
+        else el.type = 'button';
+        el.innerHTML = '<span>' + it.label + '</span>' + (it.note ? '<small>' + it.note + (it.href ? ' &#8599;' : '') + '</small>' : '');
+        el.addEventListener('mouseenter', function(){ selectItem(k); });
+        el.addEventListener('focus', function(){ selectItem(k); });
+        el.addEventListener('click', function(e){ e.stopPropagation(); selectItem(k); it.run(); });
+        it.el = el; tmList.appendChild(el);
+      });
+      if(menuOpen) selectItem(Math.min(menuSel, menuItems.length - 1));
+    }
+    buildMenu(STORES);
+    if(window.fetch && location.protocol.indexOf('http') === 0){
+      fetch('stores.json', {cache:'no-cache'}).then(function(r){ return r.ok ? r.json() : null; })
+        .then(function(d){ if(d && Array.isArray(d.stores) && d.stores.length) buildMenu(d.stores); })
+        .catch(function(){});
+    }
     menuEl.addEventListener('click', function(e){ e.stopPropagation(); });
     function selectItem(k){ menuSel = (k + menuItems.length) % menuItems.length; menuItems.forEach(function(it, i){ it.el.classList.toggle('sel', i === menuSel); }); }
     function showMenu(){
