@@ -1,4 +1,25 @@
 'use strict';
+
+/* ==========================================================
+   LAUNCH SETTINGS - edit this block only.
+   Before the launch date every buy button reads "Pre-order";
+   from the launch date onwards it switches to "Buy" by itself.
+   Replace each url with the book's direct product page as
+   soon as the listings are live.
+   ========================================================== */
+const LAUNCH = {
+    date: '2026-11-24T00:00:00+05:30',
+    retailers: [{
+        name: 'Amazon',
+        meta: 'amazon.in',
+        url: 'https://www.amazon.in/s?k=A+Life+You+Recognise+Pooja+Prakash'
+    }, {
+        name: 'Flipkart',
+        meta: 'flipkart.com',
+        url: 'https://www.flipkart.com/search?q=A+Life+You+Recognise+Pooja+Prakash'
+    }]
+};
+
 const $ = s => document.querySelector(s),
     $$ = s => [...document.querySelectorAll(s)],
     scenes = $$('.scene'),
@@ -7,48 +28,97 @@ let current = 0,
     busy = false,
     lastWheel = 0;
 document.body.dataset.scene = '0';
-const shutters = $('#transition');
-for (let i = 0; i < 12; i++) {
-    const s = document.createElement('i');
-    s.style.transitionDelay = i * .018 + 's';
-    shutters.append(s)
+
+/* ---------- scroll wheel: one drum that turns with every scroll, swipe and scene change ---------- */
+const wheel = $('#wheel'),
+    cyl = $('.wheel-cyl'),
+    RIB_STEP = 45;
+for (let i = 0; i < 24; i++) {
+    const f = document.createElement('i');
+    f.style.setProperty('--i', i);
+    if (i === 0) f.className = 'idx';
+    cyl.append(f)
+}
+let roll = 0,
+    lastInteract = Date.now();
+
+/* roll is in degrees; positive = the front of the drum moves down (scrolling forward) */
+function rollWheel(deg, dur) {
+    roll += deg;
+    cyl.style.transitionDuration = (reduce ? 0 : dur) + 's';
+    cyl.style.transform = 'rotateX(' + (-roll) + 'deg)'
+}
+
+function syncWheel() {
+    const last = current === scenes.length - 1;
+    wheel.setAttribute('aria-label', last ? 'Back to the start' : 'Next scene');
+    wheel.classList.toggle('at-end', last)
+}
+wheel.onclick = () => go(current === scenes.length - 1 ? 0 : current + 1);
+setInterval(() => {
+    if (reduce || busy || document.hidden || $('dialog[open]')) return;
+    if (current === scenes.length - 1 || Date.now() - lastInteract < 3000) return;
+    rollWheel(22.5, 1.1)
+}, 3400);
+
+function swapTo(index) {
+    current = index;
+    document.body.dataset.scene = String(current);
+    scenes.forEach((s, i) => {
+        s.classList.toggle('active', i === current);
+        s.inert = i !== current;
+        if (i === current) s.scrollTop = 0
+    });
+    $$('.route-dots button').forEach((b, i) => {
+        if (i === current) b.setAttribute('aria-current', 'step');
+        else b.removeAttribute('aria-current')
+    });
+    $('#position').textContent = String(current).padStart(2, '0') + ' / 06';
+    $('#previous').disabled = current === 0;
+    $('#next').disabled = current === 6;
+    $('#next').setAttribute('aria-label', current === 6 ? 'End of journey' : 'Next scene');
+    syncWheel()
 }
 
 function go(index) {
     index = Math.max(0, Math.min(scenes.length - 1, index));
-    if (index === current || busy) return;
-    busy = true;
+    if (busy) return;
     $$('dialog[open]').forEach(d => d.close());
-    shutters.classList.add('cover');
+    if (index === current) return;
+    busy = true;
+    lastInteract = Date.now();
+    const dir = index > current ? 1 : -1,
+        jump = Math.abs(index - current),
+        from = scenes[current],
+        to = scenes[index];
+    document.body.style.setProperty('--dir', dir);
+    rollWheel(dir * RIB_STEP * Math.min(jump, 4), jump > 2 ? 1.4 : .95);
     playTone();
+    if (reduce) {
+        swapTo(index);
+        busy = false;
+        return
+    }
+    from.classList.add('leaving');
     setTimeout(() => {
-        current = index;
-        document.body.dataset.scene = String(current);
-        scenes.forEach((s, i) => {
-            s.classList.toggle('active', i === current);
-            s.inert = i !== current;
-            if (i === current) s.scrollTop = 0
-        });
-        $$('.route-dots button').forEach((b, i) => {
-            if (i === current) b.setAttribute('aria-current', 'step');
-            else b.removeAttribute('aria-current')
-        });
-        $('#position').textContent = String(current).padStart(2, '0') + ' / 06';
-        $('#previous').disabled = current === 0;
-        $('#next').disabled = current === 6;
-        $('#next').setAttribute('aria-label', current === 6 ? 'End of journey' : 'Next scene');
-        shutters.classList.remove('cover');
+        from.classList.remove('leaving');
+        to.classList.add('entering');
+        swapTo(index);
+        setTimeout(() => to.classList.remove('entering'), 950);
         setTimeout(() => {
             busy = false
         }, 650)
-    }, reduce ? 0 : 620)
+    }, 440)
 }
 $$('[data-go]').forEach(b => b.addEventListener('click', () => go(Number(b.dataset.go))));
 $('#previous').onclick = () => go(current - 1);
 $('#next').onclick = () => go(current + 1);
 $('#previous').disabled = true;
 addEventListener('wheel', e => {
-    if ($('dialog[open]') || busy) return;
+    if ($('dialog[open]')) return;
+    lastInteract = Date.now();
+    rollWheel(Math.max(-30, Math.min(30, e.deltaY * .25)), .35);
+    if (busy) return;
     const s = scenes[current];
     if (s.scrollHeight > s.clientHeight + 5) {
         if (e.deltaY > 0 && s.scrollTop + s.clientHeight < s.scrollHeight - 4) return;
@@ -75,8 +145,19 @@ addEventListener('keydown', e => {
         go(0)
     }
 });
-let touchY = 0;
-addEventListener('touchstart', e => touchY = e.touches[0].clientY, {
+let touchY = 0,
+    touchLastY = 0;
+addEventListener('touchstart', e => {
+    touchY = touchLastY = e.touches[0].clientY
+}, {
+    passive: true
+});
+addEventListener('touchmove', e => {
+    const y = e.touches[0].clientY;
+    rollWheel(Math.max(-20, Math.min(20, (touchLastY - y) * .5)), .2);
+    touchLastY = y;
+    lastInteract = Date.now()
+}, {
     passive: true
 });
 addEventListener('touchend', e => {
@@ -104,7 +185,7 @@ $$('[data-test]').forEach(b => b.onclick = () => {
 $('#voice-button').onclick = () => {
     const el = $('.voices'),
         clear = el.classList.toggle('cleared');
-    $('#voice-button').innerHTML = (clear ? 'LISTEN AGAIN' : 'MAKE ROOM FOR YOUR VOICE') + ' <b>↗</b>';
+    $('#voice-button .lbl').textContent = clear ? 'LISTEN AGAIN' : 'MAKE ROOM FOR YOUR VOICE';
     playTone(440)
 };
 const themes = [{
@@ -185,12 +266,25 @@ $('#theme-read').onclick = () => readChapter(themes[theme].read);
 $('#sample').onclick = () => readChapter(1);
 $('#author-read').onclick = () => read('A note to my daughter', AUTHOR_NOTE, 'POOJA PRAKASH / AUTHOR’S NOTE');
 
+function icon(name) {
+    const NS = 'http://www.w3.org/2000/svg',
+        svg = document.createElementNS(NS, 'svg'),
+        use = document.createElementNS(NS, 'use');
+    svg.setAttribute('class', 'ic');
+    svg.setAttribute('aria-hidden', 'true');
+    use.setAttribute('href', '#i-' + name);
+    svg.append(use);
+    return svg
+}
+
 function contents() {
+    $$('dialog[open]').forEach(d => d.close());
     $('#chapter-dialog').showModal();
     $('#chapter-dialog').scrollTop = 0
 }
 $('#contents').onclick = contents;
 $('#contents-two').onclick = contents;
+$('#menu-chapters').onclick = contents;
 BOOK_CHAPTERS.forEach(c => {
     const b = document.createElement('button');
     b.className = 'chapter-row';
@@ -198,9 +292,7 @@ BOOK_CHAPTERS.forEach(c => {
     num.textContent = String(c.n).padStart(2, '0');
     const t = document.createElement('b');
     t.textContent = c.title;
-    const a = document.createElement('i');
-    a.textContent = '↗';
-    b.append(num, t, a);
+    b.append(num, t, icon('ur'));
     b.onclick = () => readChapter(c.n);
     $('#chapter-list').append(b)
 });
@@ -209,6 +301,64 @@ $('#menu').onclick = () => {
     $('#menu').setAttribute('aria-expanded', 'true')
 };
 $('#menu-dialog').addEventListener('close', () => $('#menu').setAttribute('aria-expanded', 'false'));
+
+/* ---------- pre-order / buy ---------- */
+const launchAt = new Date(LAUNCH.date),
+    released = Date.now() >= launchAt.getTime(),
+    daysLeft = Math.ceil((launchAt.getTime() - Date.now()) / 864e5),
+    longDate = launchAt.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        timeZone: 'Asia/Kolkata'
+    });
+const BUY_TEXT = released ? {
+    short: 'BUY NOW',
+    long: 'BUY THE BOOK',
+    cta: 'BUY THE BOOK',
+    menu: 'BUY THE BOOK',
+    header: 'BUY / A LIFE YOU RECOGNISE'
+} : {
+    short: 'PRE-ORDER',
+    long: 'PRE-ORDER',
+    cta: 'PRE-ORDER NOW',
+    menu: 'PRE-ORDER THE BOOK',
+    header: 'PRE-ORDER / A LIFE YOU RECOGNISE'
+};
+const RELEASE_TEXT = {
+    tag: released ? 'OUT NOW' : 'OUT ' + longDate.toUpperCase(),
+    key: released ? 'PUBLISHED' : 'RELEASE DATE',
+    long: longDate,
+    status: released ? 'OUT NOW' : 'PRE-ORDER NOW',
+    count: released ? '' : daysLeft <= 1 ? 'OUT TOMORROW' : daysLeft + ' DAYS TO GO',
+    reader: released ? 'Out now. Enjoyed this passage? Get the whole book.' : 'Out ' + longDate + '. Enjoyed this passage? Pre-order your copy.'
+};
+$$('[data-buy-label]').forEach(el => el.textContent = BUY_TEXT[el.dataset.buyLabel]);
+$$('[data-release]').forEach(el => el.textContent = RELEASE_TEXT[el.dataset.release]);
+LAUNCH.retailers.forEach(r => {
+    const a = document.createElement('a');
+    a.className = 'retailer';
+    a.href = r.url;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.setAttribute('aria-label', (released ? 'Buy' : 'Pre-order') + ' on ' + r.name + ' (opens in a new tab)');
+    const n = document.createElement('span');
+    n.className = 'lbl r-name';
+    n.textContent = r.name.toUpperCase();
+    const m = document.createElement('span');
+    m.className = 'lbl r-meta';
+    m.textContent = r.meta;
+    a.append(n, m, icon('ur'));
+    $('#retailer-list').append(a)
+});
+
+function openBuy() {
+    $$('dialog[open]').forEach(d => d.close());
+    $('#buy-dialog').showModal();
+    $('#buy-dialog').scrollTop = 0;
+    playTone(360)
+}
+$$('[data-buy]').forEach(b => b.addEventListener('click', openBuy));
 function closeDialog(d) {
     if (!d.open || d.classList.contains('closing')) return;
     if (reduce) {
@@ -270,7 +420,8 @@ $('#sound').onclick = () => {
     }
     sound = !sound;
     sound ? ac.resume() : ac.suspend();
-    $('#sound').innerHTML = (sound ? 'SOUND ON' : 'SOUND OFF') + ' <span>≋</span>';
+    $('#sound .lbl').textContent = sound ? 'SOUND ON' : 'SOUND OFF';
+    $('#sound use').setAttribute('href', sound ? '#i-sound-on' : '#i-sound-off');
     $('#sound').setAttribute('aria-pressed', String(sound));
     $('#sound').setAttribute('aria-label', sound ? 'Turn sound off' : 'Turn sound on')
 };
