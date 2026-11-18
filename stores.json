@@ -1,0 +1,8 @@
+{
+  "how_to": "Paste each store's product page link into url (must start with https://). Leave url empty to show Soon; Soon sends visitors to the launch list. url_in is optional: visitors in India get it instead of url (use it for amazon.in). india_only hides a store for visitors outside India. Changes go live as soon as this file is updated on main.",
+  "stores": [
+    { "name": "Amazon",   "url": "", "url_in": "" },
+    { "name": "Flipkart", "url": "", "india_only": true },
+    { "name": "Kindle",   "url": "", "url_in": "" }
+  ]
+}
